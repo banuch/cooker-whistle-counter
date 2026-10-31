@@ -4,7 +4,7 @@ A Flutter app that counts pressure cooker whistles using only the phone's microp
 
 ## Features
 - Large live count with a settable target (e.g. 3 whistles)
-- Looping alarm and vibration at the target, until you tap **Stop alarm**
+- Looping alarm and vibration at the target (listening stops automatically), until you tap **Stop alarm**
 - Live level meter and threshold slider for calibration (settings are saved)
 - Whistle log with the time of each whistle and the gap between them
 - Screen stays on while listening

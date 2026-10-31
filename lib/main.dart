@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:record/record.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
@@ -38,7 +38,8 @@ class CounterPage extends StatefulWidget {
 
 class _CounterPageState extends State<CounterPage> {
   final _recorder = AudioRecorder();
-  final _ringer = FlutterRingtonePlayer();
+  final _player = AudioPlayer();
+  Timer? _buzz;
   final _det = WhistleDetector();
   final _level = ValueNotifier<double>(-90);
   StreamSubscription<Uint8List>? _sub;
@@ -119,7 +120,11 @@ class _CounterPageState extends State<CounterPage> {
 
   void _ringAlarm() {
     _alarm = true;
-    _ringer.playAlarm(looping: true, asAlarm: true);
+    _stop(); // stop the mic so the alarm itself isn't counted as whistles
+    _player.setReleaseMode(ReleaseMode.loop);
+    _player.play(AssetSource('alarm.wav'), volume: 1.0);
+    _buzz = Timer.periodic(
+        const Duration(milliseconds: 700), (_) => HapticFeedback.vibrate());
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -130,16 +135,21 @@ class _CounterPageState extends State<CounterPage> {
         actions: [
           FilledButton(
             onPressed: () {
-              _ringer.stop();
-              _alarm = false;
+              _stopAlarm();
               Navigator.pop(ctx);
-              _stop();
             },
             child: const Text('Stop alarm'),
           ),
         ],
       ),
     );
+  }
+
+  void _stopAlarm() {
+    _player.stop();
+    _buzz?.cancel();
+    _buzz = null;
+    _alarm = false;
   }
 
   void _reset() {
@@ -157,7 +167,8 @@ class _CounterPageState extends State<CounterPage> {
   void dispose() {
     _sub?.cancel();
     _recorder.dispose();
-    _ringer.stop();
+    _buzz?.cancel();
+    _player.dispose();
     WakelockPlus.disable();
     super.dispose();
   }
