@@ -1,0 +1,23 @@
+name: cooker_whistle_counter
+description: Counts pressure cooker whistles using the phone microphone and rings an alarm at the target count.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  record: ^6.0.0
+  shared_preferences: ^2.3.0
+  wakelock_plus: ^1.2.0
+  flutter_ringtone_player: ^4.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
