@@ -3,10 +3,12 @@
 A Flutter app that counts pressure cooker whistles using only the phone's microphone and rings an alarm when the target count is reached. No extra hardware needed.
 
 ## Features
-- Large live count with a settable target (e.g. 3 whistles)
-- Looping alarm and vibration at the target (listening stops automatically), until you tap **Stop alarm**
-- Live level meter and threshold slider for calibration (settings are saved)
-- Whistle log with the time of each whistle and the gap between them
+- Animated progress ring with a live count and a settable target (e.g. 3 whistles)
+- Full-screen looping alarm and vibration at the target (listening stops automatically), until you tap **Stop alarm**
+- Four alarm tones to choose from (Chime, Kitchen bell, Marimba, Digital beep) plus an optional soft ding on every whistle
+- Live level meter with a draggable threshold marker for calibration (settings are saved)
+- Whistle log with the time of each whistle and the gap between them, plus cooking time
+- Adapts to phones, tablets and landscape; follows the system light/dark theme
 - Screen stays on while listening
 
 ## Get the APK without installing Flutter
@@ -26,8 +28,8 @@ flutter run --release  # on a real phone; emulators have no usable mic
 ## Calibrating (do this once)
 1. Tap **Start listening** with the kitchen in its normal state. Note the dB level.
 2. Watch the level during a real whistle (it should jump 15–30 dB).
-3. Set the threshold slider roughly halfway between the two.
-4. If spoon clinks or the mixie get counted, raise **Advanced → Minimum whistle length** to 600–800 ms.
+3. Drag the white marker on the level meter roughly halfway between the two.
+4. If spoon clinks or the mixie get counted, raise **Settings → Minimum whistle length** to 600–800 ms.
 
 ## How it works
 - 16 kHz mono PCM from the mic → 32 ms frames → Hann window → Goertzel filters at 2.0–4.5 kHz (every 125 Hz).
